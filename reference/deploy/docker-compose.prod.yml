@@ -1,0 +1,13 @@
+# Production override — use on EC2 with pre-built images from GHCR
+services:
+  backend:
+    image: ghcr.io/YOUR_USERNAME/product-review-tracker/backend:latest
+    build: !reset null
+
+  frontend:
+    image: ghcr.io/YOUR_USERNAME/product-review-tracker/frontend:latest
+    build: !reset null
+
+  db:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

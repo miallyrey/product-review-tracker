@@ -1,0 +1,48 @@
+---
+- name: Provision Product Review Tracker on EC2
+  hosts: app_servers
+  become: true
+  vars:
+    repo_url: https://github.com/YOUR_USERNAME/product-review-tracker.git
+
+  tasks:
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Clone or update application repository
+      become_user: ubuntu
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ project_dir }}"
+        version: main
+        force: true
+      register: git_result
+
+    - name: Copy environment file if missing
+      become_user: ubuntu
+      copy:
+        src: "{{ project_dir }}/.env.example"
+        dest: "{{ project_dir }}/.env"
+        remote_src: true
+        force: false
+
+    - name: Start application with Docker Compose
+      become_user: ubuntu
+      community.docker.docker_compose_v2:
+        project_src: "{{ project_dir }}"
+        state: present
+        pull: always
+      environment:
+        HOME: /home/ubuntu
+
+    - name: Wait for API health check
+      uri:
+        url: "http://localhost:8000/health"
+        status_code: 200
+      register: health
+      retries: 10
+      delay: 5
+      until: health.status == 200

@@ -1,0 +1,5 @@
+aws_region      = "us-east-1"
+project_name    = "product-review-tracker"
+instance_type   = "t3.micro"
+key_pair_name   = "your-ec2-key-name"
+ssh_cidr        = "YOUR.IP.ADDRESS/32"
