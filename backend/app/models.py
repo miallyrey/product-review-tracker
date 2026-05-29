@@ -18,6 +18,7 @@ class Product(Base):
     status_received: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     status_reviewed: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     status_posted_instagram: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    status_posted_tiktok: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     status_posted_youtube: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     sponsorship_status: Mapped[str | None] = mapped_column(String(50), nullable=True)
 
