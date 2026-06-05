@@ -85,7 +85,7 @@ export default function ProductForm({ initialProduct, onSubmit, onCancel }) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">
-          Product Name *
+          Product Name  *
           <input
             name="product_name"
             value={form.product_name}
