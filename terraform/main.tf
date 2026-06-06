@@ -36,4 +36,8 @@ resource "aws_instance" "my_servers" {
     instance_type = var.instance_type
     key_name = aws_key_pair.myservers_key.key_name
     security_groups = [aws_security_group.myservers_sg.name]
+    
+    tags = {
+        Name = each.key
+    }
 }
