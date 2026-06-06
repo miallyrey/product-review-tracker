@@ -1,5 +1,5 @@
-resource "aws_security_group" "backend_sg" {
-    name = "back-end-sg"
+resource "aws_security_group" "myservers_sg" {
+    name = "my_servers_sg"
     description = "Allow SSH and FastAPI"
 
     ingress {
@@ -24,14 +24,16 @@ resource "aws_security_group" "backend_sg" {
     }
 }
 
-resource "aws_key_pair" "backend_key" {
-    key_name = "labuser"
+resource "aws_key_pair" "myservers_key" {
+    key_name = "my_servers_key"
     public_key = file("~/.ssh/id_ed25519.pub")
 }
 
-resource "aws_instance" "backend_ec2" {
+resource "aws_instance" "my_servers" {
+
+    for_each = toset(["frontend-server","backend-server"])
     ami = var.ami_id
     instance_type = var.instance_type
-    key_name = aws_key_pair.backend_key.key_name
-    security_groups = [aws_security_group.backend_sg.name]
+    key_name = aws_key_pair.myservers_key.key_name
+    security_groups = [aws_security_group.myservers_sg.name]
 }
